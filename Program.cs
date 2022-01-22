@@ -102,27 +102,15 @@ namespace JurassicPark
                         break;
 
                     default:
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("That is not a valid selection. Try again.");
+                        Console.WriteLine("That is not a valid selection. Please try again.");
                         break;
 
-
-
-                        if (choice == "Q")
-                        {
-                            keepGoing = false;
-                        }
-                        else
-                        {
-                            var dino = new Dinosaur();
-
-
-                        }
                 }
             }
         }
     }
 }
+
 
 
 
