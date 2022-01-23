@@ -109,22 +109,22 @@ namespace JurassicPark
                         break;
 
                     case "A":
-                        var dino = new Dinosaur();
+                        var dinosaur = new Dinosaur();
                         Console.WriteLine();
-                        dino.Name = PromptForString("What is the dinosaurs name? ").ToUpper();
-                        dino.DietType = PromptForDiet("Is this dinosaur an (H)erbivore or a (C)arnivore? ").ToUpper();
-                        dino.Weight = PromptForInteger("How much does your dinosaur weigh, in pounds? ");
-                        dino.EnclosureNumber = PromptForInteger("Please assign an enclosure number to this dinosaur: ");
-                        dino.WhenAcquired = DateTime.Now;
-                        dinosaurs.Add(dino);
+                        dinosaur.Name = PromptForString("What is the dinosaurs name? ").ToUpper();
+                        dinosaur.DietType = PromptForDiet("Is this dinosaur an (H)erbivore or a (C)arnivore? ").ToUpper();
+                        dinosaur.Weight = PromptForInteger("How much does your dinosaur weigh, in pounds? ");
+                        dinosaur.EnclosureNumber = PromptForInteger("Please assign an enclosure number to this dinosaur: ");
+                        dinosaur.WhenAcquired = DateTime.Now;
+                        dinosaurs.Add(dinosaur);
                         break;
 
                     case "R":
                         Console.WriteLine();
                         var nameToRemove = PromptForString("What is the name of the dinosaur you'd like to remove? ");
                         Console.WriteLine();
-                        Dinosaur foundDino = dinosaurs.FirstOrDefault(dinosaur => dinosaur.Name == nameToRemove);
-                        if (foundDino == null)
+                        Dinosaur foundDinosaur = dinosaurs.FirstOrDefault(dinosaur => dinosaur.Name == nameToRemove);
+                        if (foundDinosaur == null)
                         {
                             Console.WriteLine("");
                             Console.WriteLine("That dinosaur isn't in our record.");
@@ -132,12 +132,12 @@ namespace JurassicPark
                         }
                         else
                         {
-                            var confirmRemoval = PromptForString($"Are you sure you want to remove {foundDino.Name} from the park? (Y)es or (N)o ").ToUpper();
+                            var confirmRemoval = PromptForString($"Are you sure you want to remove {foundDinosaur.Name} from the park? (Y)es or (N)o ").ToUpper();
                             if (confirmRemoval == "Y")
                             {
-                                dinosaurs.Remove(foundDino);
+                                dinosaurs.Remove(foundDinosaur);
                                 Console.WriteLine();
-                                Console.WriteLine($"{foundDino.Name} has been removed from the park register.");
+                                Console.WriteLine($"{foundDinosaur.Name} has been removed from the park register.");
                                 Console.WriteLine();
                             }
                         }
@@ -146,8 +146,8 @@ namespace JurassicPark
                     case "T":
                         Console.WriteLine();
                         var nameToTransfer = PromptForString("What is the name of the dinosaur you'd like to transfer? ").ToUpper();
-                        Dinosaur moveDino = dinosaurs.FirstOrDefault(dinosaur => dinosaur.Name == nameToTransfer);
-                        if (moveDino == null)
+                        Dinosaur moveDinosaur = dinosaurs.FirstOrDefault(dinosaur => dinosaur.Name == nameToTransfer);
+                        if (moveDinosaur == null)
                         {
                             Console.WriteLine();
                             Console.WriteLine("Sorry, we don't have a dinosaur registered by that name. ");
@@ -156,9 +156,9 @@ namespace JurassicPark
                         else
                         {
                             Console.WriteLine();
-                            Console.WriteLine($"{moveDino.Name} is currently registered to Enclosure {moveDino.EnclosureNumber}.");
+                            Console.WriteLine($"{moveDinosaur.Name} is currently registered to Enclosure {moveDinosaur.EnclosureNumber}.");
                             Console.WriteLine();
-                            moveDino.EnclosureNumber = PromptForInteger($"Please enter {moveDino.Name}'s new enclosure number: ");
+                            moveDinosaur.EnclosureNumber = PromptForInteger($"Please enter {moveDinosaur.Name}'s new enclosure number: ");
                             Console.WriteLine("");
                         }
                         break;
