@@ -42,7 +42,7 @@ namespace JurassicPark
             Console.WriteLine($"Diet: {DietType} ");
             Console.WriteLine($"Acquired: {WhenAcquired} ");
             Console.WriteLine($"Weight: {Weight} lbs ");
-            Console.WriteLine($"Enclosure #: {EnclosureNumber} ");
+            Console.WriteLine($"Enclosure: {EnclosureNumber} ");
         }
     }
 
@@ -103,32 +103,32 @@ namespace JurassicPark
             var database = new DinosaurDatabase();
 
             var dinosaurs = new List<Dinosaur>();
-            {
-                new Dinosaur()
-                {
-                    Name = "Jeff",
-                    DietType = "Carnivore",
-                    WhenAcquired = DateTime.Now,
-                    Weight = 10962,
-                    EnclosureNumber = 1,
-                };
-                new Dinosaur()
-                {
-                    Name = "George",
-                    DietType = "Herbivore",
-                    WhenAcquired = DateTime.Now,
-                    Weight = 67,
-                    EnclosureNumber = 2,
-                };
-                new Dinosaur()
-                {
-                    Name = "Big Betty",
-                    DietType = "Carnivore",
-                    WhenAcquired = DateTime.Now,
-                    Weight = 15589,
-                    EnclosureNumber = 3,
-                };
-            };
+            // {
+            //     new Dinosaur()   <---- why is this sample list here? (doesn't seem to work)
+            //     {
+            //         Name = "Jeff",
+            //         DietType = "Carnivore",
+            //         WhenAcquired = DateTime.Now,
+            //         Weight = 10962,
+            //         EnclosureNumber = 1,
+            //     };
+            //     new Dinosaur()
+            //     {
+            //         Name = "George",
+            //         DietType = "Herbivore",
+            //         WhenAcquired = DateTime.Now,
+            //         Weight = 67,
+            //         EnclosureNumber = 2,
+            //     };
+            //     new Dinosaur()
+            //     {
+            //         Name = "Big Betty",
+            //         DietType = "Carnivore",
+            //         WhenAcquired = DateTime.Now,
+            //         Weight = 15589,
+            //         EnclosureNumber = 3,
+            //     };
+            // };
 
             var keepGoing = true;
 
@@ -152,7 +152,30 @@ namespace JurassicPark
                 switch (choice)
                 {
                     case "V":
-                        ViewAllDinosaurs(database); //<----- what, why?
+                        var viewPreference = PromptForString("Would you like to view the dinosaurs by (N)ame or (E)enclosure? ").ToUpper();
+                        Console.WriteLine();
+                        var viewByName = dinosaurs.OrderBy(dinosaur => dinosaur.Name);
+                        var viewByEnclosureNumber = dinosaurs.OrderBy(dinosaur => dinosaur.EnclosureNumber);
+
+                        if (dinosaurs.Count == 0)
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine("Sorry, but we're all out of dinosaurs at the moment.");
+                        }
+                        else if (viewPreference == "N")
+                        {
+                            foreach (var viewDinosaur in viewByName)
+                            {
+                                viewDinosaur.DisplayDinosaurs();
+                            }
+                        }
+                        else if (viewPreference == "E")
+                        {
+                            foreach (var viewDinosaur in viewByEnclosureNumber)
+                            {
+                                viewDinosaur.DisplayDinosaurs();
+                            }
+                        }
                         break;
 
                     case "A":
