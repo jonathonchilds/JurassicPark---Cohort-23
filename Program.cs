@@ -7,48 +7,6 @@ using CsvHelper;
 
 namespace JurassicPark
 {
-
-    class DinosaurDatabase
-
-    {
-        private List<Dinosaur> Dinosaurs { get; set; } = new List<Dinosaur>();
-
-        public void AddDinosaur(Dinosaur add)   //<--- Can't this just be one line, somehow?
-        {
-            Dinosaurs.Add(add);
-        }
-        public void RemoveDinosaur(Dinosaur remove) //<--- Can't this just be one line, somehow? 
-        {
-            Dinosaurs.Remove(remove);
-        }
-        public Dinosaur ViewOneDinosaur(string dinoToFind)  //<---- Why written like this?
-        {
-            Dinosaur foundDinosaur = Dinosaurs.FirstOrDefault(dinosaur => dinosaur.Name.ToUpper().Contains(dinoToFind.ToUpper()));
-            return foundDinosaur;
-        }
-        public List<Dinosaur> ViewAllDinosaurs()
-        {
-            return Dinosaurs;
-        }
-    }
-    class Dinosaur
-    {
-        public string Name { get; set; }
-        public string DietType { get; set; }
-        public DateTime WhenAcquired { get; set; }
-        public int Weight { get; set; }
-        public int EnclosureNumber { get; set; }
-
-        public void DisplayDinosaurs()
-        {
-            Console.WriteLine($"Name: {Name} ");
-            Console.WriteLine($"Diet: {DietType} ");
-            Console.WriteLine($"Acquired: {WhenAcquired} ");
-            Console.WriteLine($"Weight: {Weight} lbs ");
-            Console.WriteLine($"Enclosure: {EnclosureNumber} ");
-        }
-    }
-
     class Program
     {
         static void DisplayGreeting()
@@ -105,7 +63,9 @@ namespace JurassicPark
 
             var database = new DinosaurDatabase();
 
-            var dinosaurs = new List<Dinosaur>();
+            //  var dinosaurs = new List<Dinosaur>();
+
+            database.LoadDinosaurs();
 
             var keepGoing = true;
 
@@ -132,10 +92,10 @@ namespace JurassicPark
                         Console.WriteLine();
                         var viewPreference = PromptForString("Would you like to view the dinosaurs by (N)ame or (E)enclosure? ").ToUpper(); //<--- add this AFTER message for no dino's
                         Console.WriteLine();
-                        var viewByName = dinosaurs.OrderBy(dinosaur => dinosaur.Name);
-                        var viewByEnclosureNumber = dinosaurs.OrderBy(dinosaur => dinosaur.EnclosureNumber);
+                        var viewByName = database.Dinosaurs.OrderBy(dinosaur => dinosaur.Name);
+                        var viewByEnclosureNumber = database.Dinosaurs.OrderBy(dinosaur => dinosaur.EnclosureNumber);
 
-                        if (dinosaurs.Count == 0)
+                        if (database.Dinosaurs.Count == 0)
                         {
                             Console.WriteLine("Sorry, but we're all out of dinosaurs at the moment.");
                         }
@@ -163,14 +123,14 @@ namespace JurassicPark
                         dinosaur.Weight = PromptForInteger("How much does your dinosaur weigh, in pounds? ");
                         dinosaur.EnclosureNumber = PromptForInteger("Please assign an enclosure number to this dinosaur: ");
                         dinosaur.WhenAcquired = DateTime.Now;
-                        dinosaurs.Add(dinosaur);
+                        database.Dinosaurs.Add(dinosaur);
                         break;
 
                     case "R":
                         Console.WriteLine();
                         var nameToRemove = PromptForString("What is the name of the dinosaur you'd like to remove? ");
                         Console.WriteLine();
-                        Dinosaur foundDinosaur = dinosaurs.FirstOrDefault(dinosaur => dinosaur.Name == nameToRemove);
+                        Dinosaur foundDinosaur = database.Dinosaurs.FirstOrDefault(dinosaur => dinosaur.Name == nameToRemove);
                         if (foundDinosaur == null)
                         {
                             Console.WriteLine("");
@@ -182,7 +142,7 @@ namespace JurassicPark
                             var confirmRemoval = PromptForString($"Are you sure you want to remove {foundDinosaur.Name} from the park? (Y)es or (N)o ").ToUpper();
                             if (confirmRemoval == "Y")
                             {
-                                dinosaurs.Remove(foundDinosaur);
+                                database.Dinosaurs.Remove(foundDinosaur);
                                 Console.WriteLine();
                                 Console.WriteLine($"{foundDinosaur.Name} has been removed from the park register.");
                                 Console.WriteLine();
@@ -193,7 +153,7 @@ namespace JurassicPark
                     case "T":
                         Console.WriteLine();
                         var nameToTransfer = PromptForString("What is the name of the dinosaur you'd like to transfer? ").ToUpper();
-                        Dinosaur moveDinosaur = dinosaurs.FirstOrDefault(dinosaur => dinosaur.Name == nameToTransfer);
+                        Dinosaur moveDinosaur = database.Dinosaurs.FirstOrDefault(dinosaur => dinosaur.Name == nameToTransfer);
                         if (moveDinosaur == null)
                         {
                             Console.WriteLine();
@@ -226,11 +186,13 @@ namespace JurassicPark
 
                 }
             }
-            var fileWriter = new StreamWriter("dinosaur.csv");
+            database.SaveDinosaurs();
+
+            var fileWriter = new StreamWriter("Dinosaurs.csv");
 
             var csvWriter = new CsvWriter(fileWriter, CultureInfo.InvariantCulture);
 
-            csvWriter.WriteRecords(dinosaurs);
+            csvWriter.WriteRecords(Dinosaurs);
 
             fileWriter.Close();
         }
