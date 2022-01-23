@@ -57,9 +57,25 @@ namespace JurassicPark
             }
             else
             {
-                Console.WriteLine("Sorry, that isn't a valid input, I'm using 0 as your answer. ");
+                Console.WriteLine("Sorry, that isn't a valid input. I'm using 0 as your answer. ");
                 return 0;
             }
+
+        }
+        static string PromptForDiet(string prompt)
+        {
+            Console.Write(prompt);
+            var userInput = Console.ReadLine().ToUpper();
+            if (userInput == "C" || userInput == "H")
+            {
+                return userInput;
+            }
+            else
+            {
+                Console.WriteLine("Sorry that's not a valid response. I'm using UNKNOWN as your answer.");
+                return "UNKNOWN";
+            }
+
         }
 
         static void Main(string[] args)
@@ -91,20 +107,23 @@ namespace JurassicPark
                 {
                     case "V":
                         break;
+
                     case "A":
                         var dino = new Dinosaur();
-                        dino.Name = PromptForString("What is the dinosaurs name? ");
-                        dino.DietType = PromptForString("Is this dinosaur an (H)erbivore or a (C)arnivore? ");
+                        Console.WriteLine();
+                        dino.Name = PromptForString("What is the dinosaurs name? ").ToUpper();
+                        dino.DietType = PromptForDiet("Is this dinosaur an (H)erbivore or a (C)arnivore? ").ToUpper();
                         dino.Weight = PromptForInteger("How much does your dinosaur weigh, in pounds? ");
                         dino.EnclosureNumber = PromptForInteger("Please assign an enclosure number to this dinosaur: ");
                         dino.WhenAcquired = DateTime.Now;
                         dinosaurs.Add(dino);
                         break;
+
                     case "R":
                         Console.WriteLine();
-                        var name = PromptForString("What is the name of the dinosaur you'd like to remove? ");
+                        var nameToRemove = PromptForString("What is the name of the dinosaur you'd like to remove? ");
                         Console.WriteLine();
-                        Dinosaur foundDino = dinosaurs.FirstOrDefault(dinosaur => dinosaur.Name == name);
+                        Dinosaur foundDino = dinosaurs.FirstOrDefault(dinosaur => dinosaur.Name == nameToRemove);
                         if (foundDino == null)
                         {
                             Console.WriteLine("");
@@ -120,17 +139,37 @@ namespace JurassicPark
                                 Console.WriteLine();
                                 Console.WriteLine($"{foundDino.Name} has been removed from the park register.");
                                 Console.WriteLine();
-
                             }
                         }
                         break;
+
                     case "T":
+                        Console.WriteLine();
+                        var nameToTransfer = PromptForString("What is the name of the dinosaur you'd like to transfer? ").ToUpper();
+                        Dinosaur moveDino = dinosaurs.FirstOrDefault(dinosaur => dinosaur.Name == nameToTransfer);
+                        if (moveDino == null)
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine("Sorry, we don't have a dinosaur registered by that name. ");
+                            Console.WriteLine();
+                        }
+                        else
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine($"{moveDino.Name} is currently registered to Enclosure {moveDino.EnclosureNumber}.");
+                            Console.WriteLine();
+                            moveDino.EnclosureNumber = PromptForInteger($"Please enter {moveDino.Name}'s new enclosure number: ");
+                            Console.WriteLine("");
+                        }
                         break;
+
                     case "S":
                         break;
+
                     case "Q":
                         keepGoing = false;
                         break;
+
                     default:
                         Console.WriteLine();
                         Console.WriteLine();
