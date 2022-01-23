@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
+using System.Globalization;
+using CsvHelper;
 
 namespace JurassicPark
 {
@@ -103,32 +106,6 @@ namespace JurassicPark
             var database = new DinosaurDatabase();
 
             var dinosaurs = new List<Dinosaur>();
-            // {
-            //     new Dinosaur()   <---- why is this sample list here? (doesn't seem to work)
-            //     {
-            //         Name = "Jeff",
-            //         DietType = "Carnivore",
-            //         WhenAcquired = DateTime.Now,
-            //         Weight = 10962,
-            //         EnclosureNumber = 1,
-            //     };
-            //     new Dinosaur()
-            //     {
-            //         Name = "George",
-            //         DietType = "Herbivore",
-            //         WhenAcquired = DateTime.Now,
-            //         Weight = 67,
-            //         EnclosureNumber = 2,
-            //     };
-            //     new Dinosaur()
-            //     {
-            //         Name = "Big Betty",
-            //         DietType = "Carnivore",
-            //         WhenAcquired = DateTime.Now,
-            //         Weight = 15589,
-            //         EnclosureNumber = 3,
-            //     };
-            // };
 
             var keepGoing = true;
 
@@ -152,14 +129,14 @@ namespace JurassicPark
                 switch (choice)
                 {
                     case "V":
-                        var viewPreference = PromptForString("Would you like to view the dinosaurs by (N)ame or (E)enclosure? ").ToUpper();
+                        Console.WriteLine();
+                        var viewPreference = PromptForString("Would you like to view the dinosaurs by (N)ame or (E)enclosure? ").ToUpper(); //<--- add this AFTER message for no dino's
                         Console.WriteLine();
                         var viewByName = dinosaurs.OrderBy(dinosaur => dinosaur.Name);
                         var viewByEnclosureNumber = dinosaurs.OrderBy(dinosaur => dinosaur.EnclosureNumber);
 
                         if (dinosaurs.Count == 0)
                         {
-                            Console.WriteLine();
                             Console.WriteLine("Sorry, but we're all out of dinosaurs at the moment.");
                         }
                         else if (viewPreference == "N")
@@ -245,8 +222,17 @@ namespace JurassicPark
                         Console.WriteLine();
                         Console.WriteLine("That is not a valid response. Please try again.");
                         break;
+
+
                 }
             }
+            var fileWriter = new StreamWriter("dinosaur.csv");
+
+            var csvWriter = new CsvWriter(fileWriter, CultureInfo.InvariantCulture);
+
+            csvWriter.WriteRecords(dinosaurs);
+
+            fileWriter.Close();
         }
     }
 }
