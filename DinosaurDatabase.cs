@@ -12,15 +12,15 @@ namespace JurassicPark
     {
         public List<Dinosaur> Dinosaurs { get; set; } = new List<Dinosaur>();
 
-        public void AddDinosaur(Dinosaur add)   //<--- Can't this just be one line, somehow?
+        public void AddDinosaur(Dinosaur add)
         {
             Dinosaurs.Add(add);
         }
-        public void RemoveDinosaur(Dinosaur remove) //<--- Can't this just be one line, somehow? 
+        public void RemoveDinosaur(Dinosaur remove)
         {
             Dinosaurs.Remove(remove);
         }
-        public Dinosaur ViewOneDinosaur(string dinoToFind)  //<---- Why written like this?
+        public Dinosaur ViewOneDinosaur(string dinoToFind)
         {
             Dinosaur foundDinosaur = Dinosaurs.FirstOrDefault(dinosaur => dinosaur.Name.ToUpper().Contains(dinoToFind.ToUpper()));
             return foundDinosaur;
@@ -86,7 +86,7 @@ namespace JurassicPark
         public static void View(DinosaurDatabase database)
         {
             Console.WriteLine();
-            var viewPreference = PromptForString("Would you like to view the dinosaurs by (N)ame or (E)enclosure? ").ToUpper(); //<--- add this AFTER message for no dino's
+            var viewPreference = PromptForString("Would you like to view the dinosaurs by (N)ame or (E)enclosure? ").ToUpper();
             Console.WriteLine();
             var viewByName = database.Dinosaurs.OrderBy(dinosaur => dinosaur.Name);
             var viewByEnclosureNumber = database.Dinosaurs.OrderBy(dinosaur => dinosaur.EnclosureNumber);
@@ -165,6 +165,22 @@ namespace JurassicPark
             dinosaur.EnclosureNumber = PromptForInteger("Please assign an enclosure number to this dinosaur: ");
             dinosaur.WhenAcquired = DateTime.Now;
             database.Dinosaurs.Add(dinosaur);
+        }
+        public static void Summarize(DinosaurDatabase database)
+        {
+            var herbivores = database.Dinosaurs.Where(dinosaur => dinosaur.DietType == "H");
+            var carnivores = database.Dinosaurs.Where(dinosaur => dinosaur.DietType == "C");
+            Console.WriteLine();
+            Console.WriteLine($"Jurassic Park currently holds {herbivores.Count()} herbivores and {carnivores.Count()} carnivores.");
+            foreach (var herbivore in herbivores)
+            {
+                Console.WriteLine($"The herbivores are: {herbivore}, ");
+            }
+            foreach (var carnivore in carnivores)
+            {
+                Console.WriteLine($"The carnivores are: {carnivore}, ");
+            }
+
         }
     }
 }

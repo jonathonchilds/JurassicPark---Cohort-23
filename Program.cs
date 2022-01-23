@@ -25,8 +25,6 @@ namespace JurassicPark
 
             var database = new DinosaurDatabase();
 
-            //  var dinosaurs = new List<Dinosaur>();
-
             database.LoadDinosaurs();
 
             var keepGoing = true;
@@ -44,7 +42,6 @@ namespace JurassicPark
                 Console.WriteLine("(S)ummarize dinosaur diet types ");
                 Console.WriteLine("(Q)uit ");
                 Console.WriteLine("-------------------------------------------");
-
 
                 var choice = Console.ReadLine().ToUpper();
 
@@ -67,6 +64,7 @@ namespace JurassicPark
                         break;
 
                     case "S":
+                        DinosaurDatabase.Summarize(database);
                         break;
 
                     case "Q":

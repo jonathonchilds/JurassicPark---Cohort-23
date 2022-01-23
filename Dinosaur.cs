@@ -17,6 +17,7 @@ namespace JurassicPark
             Console.WriteLine($"Acquired: {WhenAcquired} ");
             Console.WriteLine($"Weight: {Weight} lbs ");
             Console.WriteLine($"Enclosure: {EnclosureNumber} ");
+            Console.WriteLine();
         }
     }
 }
