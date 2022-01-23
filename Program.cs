@@ -122,7 +122,7 @@ namespace JurassicPark
                 };
                 new Dinosaur()
                 {
-                    Name = "Betty",
+                    Name = "Big Betty",
                     DietType = "Carnivore",
                     WhenAcquired = DateTime.Now,
                     Weight = 15589,
