@@ -4,6 +4,21 @@ using System.Linq;
 
 namespace JurassicPark
 {
+
+    class DinosaurDatabase
+
+    {
+        private List<Dinosaur> Dinosaurs { get; set; } = new List<Dinosaur>();
+
+        public void AddDinosaur(Dinosaur add)   //<--- Can't this just be one line, somehow?
+        {
+            Dinosaurs.Add(add);
+        }
+        public void RemoveDinosaur(Dinosaur remove) //<--- Can't this just be one line, somehow? 
+        {
+            Dinosaurs.Remove(remove);
+        }
+    }
     class Dinosaur
     {
         public string Name { get; set; }
@@ -17,17 +32,18 @@ namespace JurassicPark
     {
         static void DisplayGreeting()
         {
+            Console.WriteLine();
+            Console.WriteLine();
             Console.WriteLine("----------------------------------------");
             Console.WriteLine("    Welcome to Jurassic Park    ");
             Console.WriteLine("----------------------------------------");
-            Console.WriteLine();
             Console.WriteLine();
         }
 
         static string PromptForString(string prompt)
         {
             Console.Write(prompt);
-            var userInput = Console.ReadLine().ToLower();
+            var userInput = Console.ReadLine().ToUpper();
             return userInput;
         }
         static int PromptForInteger(string prompt)
@@ -68,43 +84,58 @@ namespace JurassicPark
                 Console.WriteLine("(Q)uit ");
                 Console.WriteLine("-------------------------------------------");
 
+
                 var choice = Console.ReadLine().ToUpper();
 
                 switch (choice)
                 {
                     case "V":
                         break;
-
                     case "A":
                         var dino = new Dinosaur();
-
                         dino.Name = PromptForString("What is the dinosaurs name? ");
                         dino.DietType = PromptForString("Is this dinosaur an (H)erbivore or a (C)arnivore? ");
                         dino.Weight = PromptForInteger("How much does your dinosaur weigh, in pounds? ");
                         dino.EnclosureNumber = PromptForInteger("Please assign an enclosure number to this dinosaur: ");
-
-                        dinosaurs.Add(dino);
-
+                        dino.WhenAcquired = DateTime.Now;
                         dinosaurs.Add(dino);
                         break;
-
                     case "R":
-                        break;
+                        Console.WriteLine();
+                        var name = PromptForString("What is the name of the dinosaur you'd like to remove? ");
+                        Console.WriteLine();
+                        Dinosaur foundDino = dinosaurs.FirstOrDefault(dinosaur => dinosaur.Name == name);
+                        if (foundDino == null)
+                        {
+                            Console.WriteLine("");
+                            Console.WriteLine("That dinosaur isn't in our record.");
+                            Console.WriteLine();
+                        }
+                        else
+                        {
+                            var confirmRemoval = PromptForString($"Are you sure you want to remove {foundDino.Name} from the park? (Y)es or (N)o ").ToUpper();
+                            if (confirmRemoval == "Y")
+                            {
+                                dinosaurs.Remove(foundDino);
+                                Console.WriteLine();
+                                Console.WriteLine($"{foundDino.Name} has been removed from the park register.");
+                                Console.WriteLine();
 
+                            }
+                        }
+                        break;
                     case "T":
                         break;
-
                     case "S":
                         break;
-
                     case "Q":
                         keepGoing = false;
                         break;
-
                     default:
-                        Console.WriteLine("That is not a valid selection. Please try again.");
+                        Console.WriteLine();
+                        Console.WriteLine();
+                        Console.WriteLine("That is not a valid response. Please try again.");
                         break;
-
                 }
             }
         }
