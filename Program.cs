@@ -18,6 +18,15 @@ namespace JurassicPark
         {
             Dinosaurs.Remove(remove);
         }
+        public Dinosaur ViewOneDinosaur(string dinoToFind)  //<---- Why written like this?
+        {
+            Dinosaur foundDinosaur = Dinosaurs.FirstOrDefault(dinosaur => dinosaur.Name.ToUpper().Contains(dinoToFind.ToUpper()));
+            return foundDinosaur;
+        }
+        public List<Dinosaur> ViewAllDinosaurs()
+        {
+            return Dinosaurs;
+        }
     }
     class Dinosaur
     {
@@ -26,6 +35,15 @@ namespace JurassicPark
         public DateTime WhenAcquired { get; set; }
         public int Weight { get; set; }
         public int EnclosureNumber { get; set; }
+
+        public void DisplayDinosaurs()
+        {
+            Console.WriteLine($"Name: {Name} ");
+            Console.WriteLine($"Diet: {DietType} ");
+            Console.WriteLine($"Acquired: {WhenAcquired} ");
+            Console.WriteLine($"Weight: {Weight} lbs ");
+            Console.WriteLine($"Enclosure #: {EnclosureNumber} ");
+        }
     }
 
     class Program
@@ -82,7 +100,35 @@ namespace JurassicPark
         {
             DisplayGreeting();
 
+            var database = new DinosaurDatabase();
+
             var dinosaurs = new List<Dinosaur>();
+            {
+                new Dinosaur()
+                {
+                    Name = "Jeff",
+                    DietType = "Carnivore",
+                    WhenAcquired = DateTime.Now,
+                    Weight = 10962,
+                    EnclosureNumber = 1,
+                };
+                new Dinosaur()
+                {
+                    Name = "George",
+                    DietType = "Herbivore",
+                    WhenAcquired = DateTime.Now,
+                    Weight = 67,
+                    EnclosureNumber = 2,
+                };
+                new Dinosaur()
+                {
+                    Name = "Betty",
+                    DietType = "Carnivore",
+                    WhenAcquired = DateTime.Now,
+                    Weight = 15589,
+                    EnclosureNumber = 3,
+                };
+            };
 
             var keepGoing = true;
 
@@ -106,6 +152,7 @@ namespace JurassicPark
                 switch (choice)
                 {
                     case "V":
+                        ViewAllDinosaurs(database); //<----- what, why?
                         break;
 
                     case "A":
